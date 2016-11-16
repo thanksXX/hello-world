@@ -5,3 +5,28 @@ SELECT * FROM TABLE1 WHERE X_DATE=TO_DATE('11/16/2016','MM/DD/YY')   --查询201
 SELECT * FROM TABLE1 WHERE X_DATE BETWEEN &FROM_DATE AND &TO_DATE    --PLSQL Developer中查询数据时手动输入起始时间
 SELECT * FROM TABLE1 WHERE TRUNC(X_DATE) BETWEEN ：FromDate AND :ToDate  --FContext表示法
 SELECT * FROM TABLE1 WHERE TRUNC(SYSDATE)>=X_DATE AND MOD(TRUNC(SYSDATE)-X_DATE,7)=0  --查询X_DATE之后每隔7天的数据
+
+
+SQL> DESC emp  (describe)
+SQL> SET line 100
+SQL> L  (list)
+SQL> /  (run)
+SQL> n   (设置第n行为当前行，n为自然数，0，1,2,3 ，，，）
+SQL> a,job  (append,附加job行）
+SQL> del n    (删除第n行，未指定则删除当前行）
+SQL> del m,n   (删除第m到n行)
+SQL> C/dept/emp  (change,修改或删除操作。将sql语句中的dept改为emp)
+SQL> SAVE D:\SQL\SAMPLE.sql       (把SQL缓冲区的内容存入指定的文s件，这个文件叫脚本文件)
+                                  (SQL*PLUS的命令不被存入SQL缓冲区)
+                                  (SQL缓冲区只能存储一个SQL语句)
+SQL> GET D:\SQL\SAMPLE.sql     (将脚本文件装入SQL缓冲区)
+SQL> ed D:\SQL\SAMPLE      (edit)
+SQL> @ D:\SQL\SAMPLE.sql     (@或START命令是把指定脚本文件的内容装入SQL缓冲区中并运行)
+
+什么情况下创建脚本文件：
+若写的SQL语句是将来反复使用的，就该把语句装入脚本文件，若写的SQL只用一次，则没必要创建脚本文件
+
+SQL> SPOOL D:\SQL\OUTPUT    --SPOOL之后为文件名，该命令意思是在该命令之后屏幕所显示的一切都要存到D:\SQL\OUTPUT中
+SQL> SPOOL OFF;              --只有输入SPOOL OFF后才能看到OUTPUT文件中内容。若输入SPOOL OUT表示其内容将送到打印机
+
+
