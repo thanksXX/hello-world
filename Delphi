@@ -13,7 +13,7 @@ begin
   FContext.TABLE1.FetchRecords;
  
   FContext.TABLE2.ShowData(Self.pg2, TGTTABLE2_Disp, false);
-  FContext.TABLE1.ShowData(Self.pg1, TGTTABLE1_Default, false); 
+  FContext.TABLE1.ShowData(Self.pg1, TGTTABLE1_Default, false);    //从中间层框架读取数据
 end;
 
 
@@ -43,11 +43,42 @@ end;
           X1 := X2.X.Next[SA];
         end;
       X2 := FContext.X2.Next[X2];
-       
+      
 
 
-       ShellExecute(Application.Handle, 'open', PCHAR( strFileName),'','',SW_SHOWNORMAL); 
-       //ShellExecute(Application.Handle, 'open', PChar(FnT),'','',SW_SHOWNORMAL);
+
+
+
+procedure TfrmV001Main.pgPage1CellChanged(Sender: TProfGrid; ACol,
+  ARow: Integer; const OldText: WideString; var NewText: WideString;
+  var AllowExit: Boolean);
+  var
+   rdXX:TRDXX;
+begin
+    rdXX := TRDXX(Sender.Objects[0,ARow]);
+  case ACol of
+ 6:begin     //6表示下拉框所在的grid的列数
+        if (ComboBox1.ItemIndex >-1) or (NewText='') then   //ItemIndex为-1时表示未选中任何项，默认为-1
+           rdXX.X1:=NewText
+        else
+        rdXX.X1:=''
+    end;
+  end;
+ end;
+
+ procedure TfrmV001Main.pgPage1GetEditControl(Sender: TProfGrid;
+  ACol, ARow: Integer; var AControl: TWinControl);
+begin
+  case ACol of
+  6:AControl:=ComboBox1;   //选中第6列为ComboBox1项
+  end;
+end;
+
+
+
+
+    ShellExecute(Application.Handle, 'open', PCHAR( strFileName),'','',SW_SHOWNORMAL); 
+  //ShellExecute(Application.Handle, 'open', PChar(FnT),'','',SW_SHOWNORMAL);
 
 
 
