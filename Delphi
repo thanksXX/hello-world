@@ -1,0 +1,34 @@
+ProfGrid1.SortColumn := pg1COL_User;
+ProfGrid1.Sort;
+
+pgReportPage1.RowCount:=pgReportPage1.RowCount+1;
+iRowIndex := pgReportPage1.RowCount - 1;      
+pgReportPage1.Objects[0,iRowIndex]:=rdReport;
+
+
+procedure TfrmV001Main.ShowData;
+begin 
+  FContext.TABLE1.ClearRecords;
+  FContext.TABLE1.Query.Where.Deleted.Equal('N');
+  FContext.TABLE1.FetchRecords;
+ 
+  FContext.TABLE2.ShowData(Self.pg2, TGTTABLE2_Disp, false);
+  FContext.TABLE1.ShowData(Self.pg1, TGTTABLE1_Default, false);
+ 
+end;
+
+
+       FContext.TABLE3.ClearRecords;
+       FContext.TABLE3.Query.Reset;
+       FContext.TABLE3.Query.Where.ReportType.Equal(rdTABLE3.XX);
+       FContext.TABLE3.Query.And_.VersionNo.Equal(chr(ord('A')-1));
+       ShowMessage(FContext.TABLE3.Query.SQL);
+       FContext.TABLE3.FetchRecords;
+       rdTABLE3:=FContext.TABLE3.First;
+
+
+       ShellExecute(Application.Handle, 'open', PCHAR( strFileName),'','',SW_SHOWNORMAL); 
+       //ShellExecute(Application.Handle, 'open', PChar(FnT),'','',SW_SHOWNORMAL);
+
+
+
