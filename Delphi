@@ -1,30 +1,49 @@
-ProfGrid1.SortColumn := pg1COL_User;
-ProfGrid1.Sort;
+ProfGrid1.SortColumn := pg1XX;
+ProfGrid1.Sort;    //按列XX排序
 
-pgReportPage1.RowCount:=pgReportPage1.RowCount+1;
-iRowIndex := pgReportPage1.RowCount - 1;      
-pgReportPage1.Objects[0,iRowIndex]:=rdReport;
+pgPage1.RowCount:=pgPage1.RowCount+1;
+iRowIndex := pgPage1.RowCount - 1;      
+pgPage1.Objects[0,iRowIndex]:=rdXX;
 
 
 procedure TfrmV001Main.ShowData;
 begin 
   FContext.TABLE1.ClearRecords;
-  FContext.TABLE1.Query.Where.Deleted.Equal('N');
+  FContext.TABLE1.Query.Where.XX.Equal('N');
   FContext.TABLE1.FetchRecords;
  
   FContext.TABLE2.ShowData(Self.pg2, TGTTABLE2_Disp, false);
-  FContext.TABLE1.ShowData(Self.pg1, TGTTABLE1_Default, false);
- 
+  FContext.TABLE1.ShowData(Self.pg1, TGTTABLE1_Default, false); 
 end;
 
 
        FContext.TABLE3.ClearRecords;
        FContext.TABLE3.Query.Reset;
-       FContext.TABLE3.Query.Where.ReportType.Equal(rdTABLE3.XX);
-       FContext.TABLE3.Query.And_.VersionNo.Equal(chr(ord('A')-1));
+       FContext.TABLE3.Query.Where.XX.Equal(rdTABLE3.XX);
+       FContext.TABLE3.Query.And_.X.Equal(chr(ord('A')-1));
        ShowMessage(FContext.TABLE3.Query.SQL);
        FContext.TABLE3.FetchRecords;
        rdTABLE3:=FContext.TABLE3.First;
+       
+       
+       
+       FContext.TABLE3.ClearRecords;
+       FContext.TABLE3.Params.Reset;
+       sysdate:=Trunc(FContext.CurrentDateTime);
+       FContext.TABLE3.Params.FROM_DATE:=sysdate-DayOfTheWeek(sysdate)-7;  //取当前日期上上个周日
+       FContext.TABLE3.Params.TO_DATE:=sysdate+(7-DayOfTheWeek(sysdate))-1;  //取当前日期下个周六（即最近2周）
+       FContext.TABLE3.FetchRecords;
+            objTABLE3 := FContext.TABLE3.First;
+            while objTABLE3<>nil do
+            begin
+               ProfGrid2.Cells[pg2XX,i].Value:=ProfGrid2.Cells[pg2XX,i].Value + objTABLE3.XX + ',';
+               objTABLE3:=FContext.TABLE3.Next[objTABLE3];
+            end; 
+          end;
+          X1 := X2.X.Next[SA];
+        end;
+      X2 := FContext.X2.Next[X2];
+       
 
 
        ShellExecute(Application.Handle, 'open', PCHAR( strFileName),'','',SW_SHOWNORMAL); 
