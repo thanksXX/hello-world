@@ -6,6 +6,8 @@ SELECT * FROM TABLE1 WHERE X_DATE BETWEEN &FROM_DATE AND &TO_DATE    --PLSQL Dev
 SELECT * FROM TABLE1 WHERE TRUNC(X_DATE) BETWEEN ：FromDate AND :ToDate  --FContext表示法
 SELECT * FROM TABLE1 WHERE TRUNC(SYSDATE)>=X_DATE AND MOD(TRUNC(SYSDATE)-X_DATE,7)=0  --查询X_DATE之后每隔7天的数据
 
+CREATE TABLE NEW_TABLE AS SELECT * FROM OLD_TABLE WHERE 1=0   --将原表中的结构复制到新表，但不复制具体数据项
+
 
 SQL> DESC emp  (describe)
 SQL> SET line 100
@@ -30,3 +32,14 @@ SQL> SPOOL D:\SQL\OUTPUT    --SPOOL之后为文件名，该命令意思是在该
 SQL> SPOOL OFF;              --只有输入SPOOL OFF后才能看到OUTPUT文件中内容。若输入SPOOL OUT表示其内容将送到打印机
 
 
+
+ROW_ID                     DEPTNO    DNAMAE
+-----------------------------------------------
+AAAR3qAAEAAAACHAAA          10       ACCOUNTING
+组成：
+数据的对象编号：AAAR3q；
+数据保存文件编号：AAE；
+数据保存的块号：AAAACH；
+数据的保存行号：AAA；
+
+ 
