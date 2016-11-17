@@ -42,4 +42,24 @@ AAAR3qAAEAAAACHAAA          10       ACCOUNTING
 数据保存的块号：AAAACH；
 数据的保存行号：AAA；
 
- 
+
+
+Oracle中数据分页：
+SELECT * FROM (
+           SELECT 列,...,ROWNUM rn
+           FROM 表名称,表名称,...
+           WHERE ROWNUM<=(currentPage*lineSize)
+           ORDER BY 字段...)temp
+WHERE temp.rn>((currentPage-1)*lineSize));
+
+
+ORDER BY语法:
+where语句中出现的子查询称为subquery（嵌套子查询）（不允许出现order by语句）：
+select * from scott.emp
+where ename in (select ename from scott.emp order by ename)
+--ORA-00907:缺少右括号（错）
+
+在from语句中出现的子查询称inline view（内联视图）（将上面嵌套子查询再包装一层，成为第二层查询的内联视图：）
+select * from scott.emp
+where ename in  (select * from (select ename from scott.emp order by ename))
+--(成功）
