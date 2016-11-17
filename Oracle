@@ -55,7 +55,7 @@ WHERE temp.rn>((currentPage-1)*lineSize));  --数据分页
 select * from tablename where rownum!=10;  --返回前9条记录
 只能用（<,<=,!=）.   不能用:>,>=,=,Between...and.由于rownum是个总是从1开始的伪列，Oracle认为这种条件不成立。
 
-子查询中rownum必须有别名，否则不会查出记录，因为rownum不是某个表的列，不起别名无法知道rownum是子查询还是猪查询的列。
+子查询中rownum必须有别名，否则不会查出记录，因为rownum不是某个表的列，不起别名无法知道rownum是子查询还是主查询的列。
 查第二行后的记录可用以下子查询解决：
 SQL>select * from (select rownum no,id,name from student) where no>2;
    
