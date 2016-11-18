@@ -9,6 +9,27 @@ SELECT * FROM TABLE1 WHERE TRUNC(SYSDATE)>=X_DATE AND MOD(TRUNC(SYSDATE)-X_DATE,
 SELECT * FROM TABLE1 GROUP BY ID HAVING COUNT(*)>1   --只显示重复数据 
 SELECT * FROM TABLE1 GROUP BY ID HAVING COUNT(*)=1   --不显示重复数据 
 
+不用主函数（max()），求薪水最高值：
+select * from (select sal from emp order by sal desc)t where rownum=1;
+select sal from emp where sal not in (select e2.sal from emp e1,emp e2 where e1.sal>e2.sal);
+
+查询表中存在ID重复3次以上记录：
+select * from (select count(ID) as count from table group by ID)T where T.count>3;
+
+查询A（ID，Name）中第31-40条记录，ID作为主键可能使不连续增长的列：
+select top 10* from A where id not in (select top 30 id from A);
+select top 10* from A where id>(select max(id) from (select top 30 id from A) as A);
+select top 10* from (select top 40* from A order by id)t order by id desc;
+select top 10* from (select top 40* from A)t order by id desc;
+
+以年月日方式算出每个雇员到现在为止雇佣年限：（如Mike雇佣日期：1981-05-01，现在2016-11-18，雇佣了35年6月17天）
+select empno,ename,hiredate,
+       trunc(months_between(sysdate,hiredate)/12) year,
+       trunc(mod(months_between(sysdate,hiredate),12)) months,
+       trunc(sysdate-add_months(hiredate,months_between(sysdate,hiredate))) day
+from emp;     
+      --add_months(hiredate,months_between(sysdate,hiredate)) ： 年和月，不含天数
+
 CREATE TABLE NEW_TABLE AS SELECT * FROM OLD_TABLE WHERE 1=0   --将原表中的结构复制到新表，但不复制具体数据项
 
 
