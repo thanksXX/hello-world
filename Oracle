@@ -81,8 +81,6 @@ where ename in (select * from (select ename from scott.emp order by ename))
 select deptno,max(avg(sal)) from emp group by deptno;  --错
 select max(avg(sal)) from emp group by deptno;  --对
 
-若使用not in, 后面的子查询不能为null，否则不会返回任何结果.
-
 用存储过程写分页：
 在SQL Server中用TOP分页：
 select top 20,n.* from tablename n minus 
@@ -103,4 +101,24 @@ having中不能包含未分组列名：
 select x1,count(*） from table1 group by x1 having x2 is not null; --报错：'x2'无效，因其未在聚合函数或group by字句中.
 select x1,count(*） from table1 where x2 is not null group by x1;  --对
 group by(所有select中非函数栏位），若只有函数栏，则group by不用写；若无group by字句，select列表中不允许字段（单行函数）与分组函数混用。
+当需要使用聚合函数，又不希望由于引入聚合函数而需添加额外group by字句时，可以：支持窗口函数的dbms使用窗口函数，不支持窗口函数的dbms使用子查询。
+
+若使用not in, 后面的子查询不能为null，否则不会返回任何结果.
+IN 和NOT IN 运算符本质是OR运算
+TRUE OR NULL   --TRUE
+FALSE OR NULL  --NULL
+NOT NULL       --NULL
+
+IN和EXISTS:
+若子查询中结果集记录较少，主查询中的表较大，且有索引时：IN
+若子查询中结果集记录较大，主查询中的表较少，且有索引时:EXISTS
+区分IN和EXISTS主要是造成了驱动顺序的改变（性能变化的关键）
+EXISTS:以外层表为驱动表，先被访问；
+IN： 先执行子查询
+所以以驱动表的快速返回为目标
+
+IN不对NULL值处理： select 1 from dual where null in (0,1,2,null)  --为空
+升序排序时，null值排在最后；降序排序时，null值排在最前  （null是老大呀）
+处理空值函数：
+select * from emp order by comm desc nulls last(first);  --null的值将排在最前（后），不管是asc还是desc
 
