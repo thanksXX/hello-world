@@ -46,6 +46,9 @@ AAAR3qAAEAAAACHAAA          10       ACCOUNTING
 
 
 
+别名一经定义，在整个查询语句中就只能使用表的别名，而不能再使用表名。
+
+ANY:  <ANY (小于最大的）；  >ANY（大于最小的）；  =ANY（等价于IN）
 
 Oracle中rownum与order by:
 SELECT * FROM (
@@ -92,6 +95,8 @@ select * from
 where num>=10 and num<=20
 --在Oracle中，要将过程封装在包里，还要用动态游标才能实现数据集的返回
 
+select...from...where...group by...having...order by...
+执行顺序： 1、where将原记录过滤；2、group by分组；3、having过滤分组；4、select；5、order by
 ...where...group by...
 ...group by...having...
 聚合函数不能在where中使用：
@@ -119,6 +124,9 @@ IN： 先执行子查询
 
 IN不对NULL值处理： select 1 from dual where null in (0,1,2,null)  --为空
 升序排序时，null值排在最后；降序排序时，null值排在最前  （null是老大呀）
-处理空值函数：
-select * from emp order by comm desc nulls last(first);  --null的值将排在最前（后），不管是asc还是desc
+处理空值函数： select * from emp order by comm desc nulls last(first);  --null的值将排在最前（后），不管是asc还是desc
+除count(*)，其他分组函数都不处理空值(NULL)；若数据库没数据，count(*)返回的不是null，而是0.
+分组函数只能嵌套2层，尽管分组函数便利，但可能使系统效率明显下降，特别是大容量表格操作。因为用分组函数要扫描整个表，若用了group by字句Oracle还要排序
+
+
 
