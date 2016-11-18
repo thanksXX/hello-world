@@ -12,6 +12,7 @@ SELECT * FROM TABLE1 GROUP BY ID HAVING COUNT(*)=1   --不显示重复数据
 CREATE TABLE NEW_TABLE AS SELECT * FROM OLD_TABLE WHERE 1=0   --将原表中的结构复制到新表，但不复制具体数据项
 
 
+
 SQL> DESC emp  (describe)
 SQL> SET line 100
 SQL> L  (list)
@@ -34,8 +35,6 @@ SQL> @ D:\SQL\SAMPLE.sql     (@或START命令是把指定脚本文件的内容�
 SQL> SPOOL D:\SQL\OUTPUT    --SPOOL之后为文件名，该命令意思是在该命令之后屏幕所显示的一切都要存到D:\SQL\OUTPUT中
 SQL> SPOOL OFF;              --只有输入SPOOL OFF后才能看到OUTPUT文件中内容。若输入SPOOL OUT表示其内容将送到打印机
 
-
-
 ROW_ID                     DEPTNO    DNAMAE
 -----------------------------------------------
 AAAR3qAAEAAAACHAAA          10       ACCOUNTING
@@ -44,6 +43,7 @@ AAAR3qAAEAAAACHAAA          10       ACCOUNTING
 数据保存文件编号：AAE；
 数据保存的块号：AAAACH；
 数据的保存行号：AAA；
+
 
 
 
@@ -77,6 +77,11 @@ select * from scott.emp
 where ename in (select * from (select ename from scott.emp order by ename))
 --(成功）
 
+统计函数嵌套查询，select子查询字段只能使用嵌套的统计函数：
+select deptno,max(avg(sal)) from emp group by deptno;  --错
+select max(avg(sal)) from emp group by deptno;  --对
+
+若使用not in, 后面的子查询不能为null，否则不会返回任何结果.
 
 用存储过程写分页：
 在SQL Server中用TOP分页：
@@ -89,4 +94,13 @@ select * from
 where num>=10 and num<=20
 --在Oracle中，要将过程封装在包里，还要用动态游标才能实现数据集的返回
 
+...where...group by...
+...group by...having...
+聚合函数不能在where中使用：
+...where count(*)>1 --错
+...having count(*)>1 --对
+having中不能包含未分组列名：
+select x1,count(*） from table1 group by x1 having x2 is not null; --报错：'x2'无效，因其未在聚合函数或group by字句中.
+select x1,count(*） from table1 where x2 is not null group by x1;  --对
+group by(所有select中非函数栏位），若只有函数栏，则group by不用写；若无group by字句，select列表中不允许字段（单行函数）与分组函数混用。
 
