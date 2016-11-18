@@ -1,3 +1,7 @@
+nil:无，零，指针为空；   null：字符串为空；
+document.write() 和window screen：  window是对所有对象的容器，document是DOM对象容器，window包含document
+
+
 ProfGrid1.SortColumn := pg1XX;
 ProfGrid1.Sort;    //按列XX排序
 
