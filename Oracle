@@ -6,6 +6,9 @@ SELECT * FROM TABLE1 WHERE X_DATE BETWEEN &FROM_DATE AND &TO_DATE    --PLSQL Dev
 SELECT * FROM TABLE1 WHERE TRUNC(X_DATE) BETWEEN ：FromDate AND :ToDate  --FContext表示法
 SELECT * FROM TABLE1 WHERE TRUNC(SYSDATE)>=X_DATE AND MOD(TRUNC(SYSDATE)-X_DATE,7)=0  --查询X_DATE之后每隔7天的数据
 
+SELECT * FROM TABLE1 GROUP BY ID HAVING COUNT(*)>1   --只显示重复数据 
+SELECT * FROM TABLE1 GROUP BY ID HAVING COUNT(*)=1   --不显示重复数据 
+
 CREATE TABLE NEW_TABLE AS SELECT * FROM OLD_TABLE WHERE 1=0   --将原表中的结构复制到新表，但不复制具体数据项
 
 
@@ -54,6 +57,10 @@ WHERE temp.rn>((currentPage-1)*lineSize));  --数据分页
 
 select * from tablename where rownum!=10;  --返回前9条记录
 只能用（<,<=,!=）.   不能用:>,>=,=,Between...and.由于rownum是个总是从1开始的伪列，Oracle认为这种条件不成立。
+
+select * from (select * from emp order by sal desc) where rownum <=5;  --先排序，再选前5
+select * from emp where rownum <=5 order by sal desc;  --先选前5，再排序。先执行rownum再执行order by。
+select * from (select * from table1 order by dbms_random.value()) where rownum<=5; --随机返回5条记录。
 
 子查询中rownum必须有别名，否则不会查出记录，因为rownum不是某个表的列，不起别名无法知道rownum是子查询还是主查询的列。
 查第二行后的记录可用以下子查询解决：
