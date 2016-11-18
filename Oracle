@@ -71,3 +71,15 @@ where ename in (select * from (select ename from scott.emp order by ename))
 --(成功）
 
 
+用存储过程写分页：
+在SQL Server中用TOP分页：
+select top 20,n.* from tablename n minus 
+select top 10,m.* from tablename m.
+
+在Orace中用ROWNUM,或分析函数ROW_NUMBER:
+select * from 
+(select n.*,row_number() over (order by columnname) num from tablename n)
+where num>=10 and num<=20
+--在Oracle中，要将过程封装在包里，还要用动态游标才能实现数据集的返回
+
+
