@@ -79,6 +79,20 @@ begin
 end;
 
 
+procedure TfrmV001Main.SendEmailToXX;
+begin
+  if gblAB.CD.User='' then exit;
+  FMailer.Reset;
+  FMailer.SendTo:=gblAB.CD.User;
+  FMailer.SendTo:=FMailer.SendTo +',XX@SB.COM';        //记得在收件人前面加逗号，谨记！
+  FMailer.Subject :='系统出错'; 
+  FMailer.Content.Add('');                             //空一行
+  FMailer.Content.Add('Thanks');
+  FMailer.Send;
+  MessageDlg('更新出错,请联系XX!', mtInformation, [mbOK], 0);
+end;
+
+
 
 
     ShellExecute(Application.Handle, 'open', PCHAR( strFileName),'','',SW_SHOWNORMAL); 
