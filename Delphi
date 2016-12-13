@@ -1,6 +1,6 @@
 nil:无，零，指针为空；   null：字符串为空；
 document.write() 和window screen：  window是对所有对象的容器，document是DOM对象容器，window包含document
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ProfGrid1.SortColumn := pg1XX;
 ProfGrid1.Sort;    //按列XX排序
@@ -8,7 +8,7 @@ ProfGrid1.Sort;    //按列XX排序
 pgPage1.RowCount:=pgPage1.RowCount+1;
 iRowIndex := pgPage1.RowCount - 1;      
 pgPage1.Objects[0,iRowIndex]:=rdXX;
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 procedure TfrmV001Main.ShowData;
 begin 
@@ -19,20 +19,18 @@ begin
   FContext.TABLE2.ShowData(Self.pg2, TGTTABLE2_Disp, false);
   FContext.TABLE1.ShowData(Self.pg1, TGTTABLE1_Default, false);    //从中间层框架读取数据
 end;
-
-
-       FContext.TABLE3.ClearRecords;
-       FContext.TABLE3.Query.Reset;
-       FContext.TABLE3.Query.Where.XX.Equal(rdTABLE3.XX);
-       FContext.TABLE3.Query.And_.X.Equal(chr(ord('A')-1));
-       ShowMessage(FContext.TABLE3.Query.SQL);
-       FContext.TABLE3.FetchRecords;
-       rdTABLE3:=FContext.TABLE3.First;
-       
-       
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+       FContext.TABLE4.ClearRecords;
+       FContext.TABLE4.Query.Reset;
+       FContext.TABLE4.Query.Where.XX.Equal(rdTABLE4.XX);
+       FContext.TABLE4.Query.And_.X.Equal(chr(ord('A')-1));
+       ShowMessage(FContext.TABLE4.Query.SQL);
+       FContext.TABLE4.FetchRecords;
+       rdTABLE4:=FContext.TABLE4.First;
+        
        
        FContext.TABLE3.ClearRecords;
-       FContext.TABLE3.Params.Reset;
+       FContext.TABLE3.Params.Reset;    //Params：参数
        sysdate:=Trunc(FContext.CurrentDateTime);
        FContext.TABLE3.Params.FROM_DATE:=sysdate-DayOfTheWeek(sysdate)-7;  //取当前日期上上个周日
        FContext.TABLE3.Params.TO_DATE:=sysdate+(7-DayOfTheWeek(sysdate))-1;  //取当前日期下个周六（即最近2周）
@@ -47,11 +45,7 @@ end;
           X1 := X2.X.Next[SA];
         end;
       X2 := FContext.X2.Next[X2];
-      
-
-
-
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////   
 
 procedure TfrmV001Main.pgPage1CellChanged(Sender: TProfGrid; ACol,
   ARow: Integer; const OldText: WideString; var NewText: WideString;
@@ -77,7 +71,7 @@ begin
   6:AControl:=ComboBox1;   //选中第6列为ComboBox1项
   end;
 end;
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 procedure TfrmV001Main.SendEmailToXX;
 begin
@@ -91,9 +85,23 @@ begin
   FMailer.Send;
   MessageDlg('更新出错,请联系XX!', mtInformation, [mbOK], 0);
 end;
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
+procedure TfrmV001Main.btnJHClick(Sender: TObject);
+  var
+    strCommend: string;
+    strSQL : string;
+    rs:TDataSet;
+begin
+  strSQL:='SELECT JJJ.HHH_APPLICATION_PKG.GET_PROFILE(''YY'',''ZZ'') as FileCmd FROM DUAL'; //得到文件服务器地址
+  rs := FXXContext.QueryResult(strSQL);
+  if not rs.Eof then
+  begin
+    strCommend := rs.FieldByName('FileCmd').AsString;
+    ShellExecute(Handle, 'open', PChar('explorer.exe'), PChar(strCommend),'',SW_SHOW); //浏览器上输入所得地址后进入服务器文件夹查看
+  end;
+end;
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ShellExecute(Application.Handle, 'open', PCHAR( strFileName),'','',SW_SHOWNORMAL); 
   //ShellExecute(Application.Handle, 'open', PChar(FnT),'','',SW_SHOWNORMAL);
