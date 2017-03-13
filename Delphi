@@ -20,6 +20,27 @@ begin
   FContext.TABLE1.ShowData(Self.pg1, TGTTABLE1_Default, false);    //从中间层框架读取数据
 end;
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+procedure Tfrm001Main.InitializeControls;   //往ComboBox1添加表中不重复的、指定列的数据
+var
+  glbXX: TRDYYXX;  //定义数据库表记录集
+ begin
+  ComboBox1.Clear();  
+  glbXX := FContext.YYXX.First;  //取数
+  while glbXX <> nil do
+  begin
+    if ComboBox1.Items.IndexOf(IntToStr(glbXX.COLUMN1))=-1 then  //去重（chong）
+      begin
+      ComboBox1.AddItem(IntToStr(glbXX.COLUMN1), glbXX);   //若下拉框中无重复的指定数据，则添加此指定数据到下拉框中
+      glbXX := FContext.YYXX.Next[glbXX];  
+      end
+    else
+      glbXX := FContext.YYXX.Next[glbXX];   //若下拉框中有指定数据，则跳到下一条数据   
+      ComboBox1.Sorted:=True;     //排序
+  end;
+ end;
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
        FContext.TABLE4.ClearRecords;
        FContext.TABLE4.Query.Reset;
        FContext.TABLE4.Query.Where.XX.Equal(rdTABLE4.XX);
@@ -105,6 +126,19 @@ end;
 
     ShellExecute(Application.Handle, 'open', PCHAR( strFileName),'','',SW_SHOWNORMAL); 
   //ShellExecute(Application.Handle, 'open', PChar(FnT),'','',SW_SHOWNORMAL);
+
+
+procedure TfrmV001Main.SetDateTimeFormat(); //设置windows系统格式，使Delphi时间格式不受系统约束
+var
+  p:DWORD;
+begin
+  SetLocaleInfo(LOCALE_USER_DEFAULT,LOCALE_SSHORTDATE,pchar('yyyy-MM-dd')); //设置短日期格式
+  SetLocaleInfo(LOCALE_USER_DEFAULT,LOCALE_SLONGDATE,pchar('yyyy''年''M''月''d''日''')); 
+                     //设置长日期格式为 yyyy'年'M'月'd'日'，“年月日”字符必须用单引号括起来。Delphi字符串里必须用两个单引号。
+  SetLocaleInfo(LOCALE_USER_DEFAULT,LOCALE_STIMEFORMAT,pchar('HH:mm:ss')); //设置时间格式，24小时制
+  SendMessageTimeOut(HWND_BROADCAST,WM_SETTINGCHANGE,0,0,SMTO_ABORTIFHUNG,10,p);
+                    //设置完成后必须调用，通知其他程序格式已经更改，否则即使是程序自身也不能使用新设置的格式
+end;
 
 
 
