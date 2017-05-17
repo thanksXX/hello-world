@@ -24,6 +24,34 @@ select top 10* from A where id>(select max(id) from (select top 30 id from A) as
 select top 10* from (select top 40* from A order by id)t order by id desc;
 select top 10* from (select top 40* from A)t order by id desc;
 
+
+
+关于group by表内容：
+2005-05-09 胜
+2005-05-09 胜
+2005-05-09 负
+2005-05-09 负
+2005-05-10 胜
+2005-05-10 负
+2005-05-10 负
+要生成下列结果, 该如何写sql语句?
+           胜 负
+ 2005-05-09 2 2
+ 2005-05-10 1 2
+ 
+1) select rq,sum(case when shengfu=’胜’ then 1 else 0 end) as胜,
+             sum(case whenshengfu=’负’ then 1 else 0 end) as负
+   from tab3 group by rq
+2) select N.rq,N. 胜,M. 负
+   from  (select rq,count(*) 胜 from tab3 where shengfu=’胜’group by rq)N  inner join
+         (select rq,count(*) 负 from tab3 where shengfu=’负’group by rq)M   on N.rq=M.rq
+3) select a.rq,a. 胜 as胜,b.负 as 负
+   from  (select rq,count(shengfu) 胜from tab3 where shengfu=’胜’ group by rq) a,
+         (select rq,count(shengfu) 负from tab3 where shengfu=’负’ group by rq) b
+   where a.rq=b.rq;
+
+
+
 以年月日方式算出每个雇员到现在为止雇佣年限：（如Mike雇佣日期：1981-05-01，现在2016-11-18，雇佣了35年6月17天）
 select empno,ename,hiredate,
        trunc(months_between(sysdate,hiredate)/12) year,
