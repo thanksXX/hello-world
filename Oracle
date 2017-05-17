@@ -13,8 +13,10 @@ SELECT * FROM TABLE1 GROUP BY ID HAVING COUNT(*)=1   --不显示重复数据
 select * from (select sal from emp order by sal desc)t where rownum=1;
 select sal from emp where sal not in (select e2.sal from emp e1,emp e2 where e1.sal>e2.sal);
 
-查询表中存在ID重复3次以上记录：
-select * from (select count(ID) as count from table group by ID)T where T.count>3;
+Select top 25 percent * from TABLE1；　　－－查询表中前25%的记录
+
+select * from (select count(ID) as count from table group by ID)T where T.count>3;　－－查询表中存在ID重复3次以上记录
+
 
 查询A（ID，Name）中第31-40条记录，ID作为主键可能使不连续增长的列：
 select top 10* from A where id not in (select top 30 id from A);
