@@ -34,11 +34,21 @@ Select top 25 percent * from TABLE1；　　－－查询表中前25%的记录（
 select * from tab1 where id in ( select id from tab1 group by id having count(id)>=3)　－－查询表中存在ID重复3次以上记录
 
 
-查询A（ID，Name）中第31-40条记录，ID作为主键可能使不连续增长的列：
+查询A（ID，Name）中第31-40条记录，ID作为主键可能是不连续增长的列：
+Sql server：
 select top 10* from A where id not in (select top 30 id from A);
 select top 10* from A where id>(select max(id) from (select top 30 id from A) as A);
 select top 10* from (select top 40* from A order by id)t order by id desc;
 select top 10* from (select top 40* from A)t order by id desc;
+
+Oracle：
+SELECT * FROM 
+(SELECT A.*, ROWNUM RN FROM (SELECT * FROM A) WHERE ROWNUM <= 5）
+WHERE RN >= 3 
+
+SELECT * FROM 
+(SELECT A.*, ROWNUM RN FROM (SELECT * FROM A))  
+WHERE RN >= 3  and rn<=5
 
 
 
