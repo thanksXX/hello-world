@@ -1,5 +1,18 @@
 UPDATE TABLE1 SET X_ID=FC_CREATEGUID      --自动生成流水号
 
+CREATE OR REPLACE FUNCTION FC_CREATEGUID RETURN VARCHAR2 IS
+    GUID VARCHAR2(64);
+  BEGIN
+    GUID := SYS_GUID();
+    RETURN '{' || SUBSTR(GUID, 1, 8) || '-' || SUBSTR(GUID, 9, 4) || '-' || SUBSTR(GUID,
+                                                                                   13,
+                                                                                   4) || '-' || SUBSTR(GUID,
+                                                                                                 17,
+                                                                                                 4) || '-' || SUBSTR(GUID,
+                                                                                                              21,
+                                                                                                              12) || '}';
+ END FC_CREATEGUID;
+
 UPDATE TABLE1 SET X_DATR=TO_DATE(SUBSTR(X_NAME,LENGTH(X_NAME)-12，8),'MM/DD/YYYY')  --截取文件名中某几位转换为时间存取
 SELECT * FROM TABLE1 WHERE X_DATE=TO_DATE('11/16/2016','MM/DD/YY')   --查询2016年11月16日的所有数据
 SELECT * FROM TABLE1 WHERE X_DATE BETWEEN &FROM_DATE AND &TO_DATE    --PLSQL Developer中查询数据时手动输入起始时间
