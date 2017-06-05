@@ -31,7 +31,7 @@ select sal from emp where sal not in (select e2.sal from emp e1,emp e2 where e1.
 
 Select top 25 percent * from TABLE1；　　－－查询表中前25%的记录（sql server中有top关键字，Oracle中没有）
 
-select * from (select count(ID) as count from table group by ID)T where T.count>3;　－－查询表中存在ID重复3次以上记录
+select * from tab1 where id in ( select id from tab1 group by id having count(id)>=3)　－－查询表中存在ID重复3次以上记录
 
 
 查询A（ID，Name）中第31-40条记录，ID作为主键可能使不连续增长的列：
