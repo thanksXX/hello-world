@@ -1,3 +1,6 @@
+右表匹配，左表全显示，则为“左”连接，（+）在右表，即右表匹配。
+
+
 UPDATE TABLE1 SET X_ID=FC_CREATEGUID      --自动生成流水号
 
 CREATE OR REPLACE FUNCTION FC_CREATEGUID RETURN VARCHAR2 IS
