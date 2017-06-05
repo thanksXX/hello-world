@@ -43,12 +43,12 @@ select top 10* from (select top 40* from A)t order by id desc;
 
 Oracle：
 SELECT * FROM 
-(SELECT A.*, ROWNUM RN FROM (SELECT * FROM A) WHERE ROWNUM <= 5）
-WHERE RN >= 3 
+(SELECT A.*, ROWNUM RN FROM (SELECT * FROM A) WHERE ROWNUM <= 40）
+WHERE RN >= 31 
 
 SELECT * FROM 
 (SELECT A.*, ROWNUM RN FROM (SELECT * FROM A))  
-WHERE RN >= 3  and rn<=5
+WHERE RN >= 31  and rn<=40
 
 
 
