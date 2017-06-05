@@ -108,17 +108,19 @@ begin
 end;
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-procedure TfrmV001Main.btnJHClick(Sender: TObject);
+procedure TfrmV001Main.btnJHClick(Sender: TObject);  //通过sql实现
   var
     strCommend: string;
     strSQL : string;
     rs:TDataSet;
 begin
-  strSQL:='SELECT JJJ.HHH_APPLICATION_PKG.GET_PROFILE(''YY'',''ZZ'') as FileCmd FROM DUAL'; //得到文件服务器地址
+  strSQL:='SELECT JJJ.HHH_APPLICATION_PKG.GET_PFILE(''YY'',''ZZ'') as FileCmd FROM DUAL'; //得到文件服务器地址
+  //strSQL:='SELECT sysdate as FileCmd from dual';
   rs := FXXContext.QueryResult(strSQL);
   if not rs.Eof then
   begin
     strCommend := rs.FieldByName('FileCmd').AsString;
+   //ShowMessage(strCommend);
     ShellExecute(Handle, 'open', PChar('explorer.exe'), PChar(strCommend),'',SW_SHOW); //浏览器上输入所得地址后进入服务器文件夹查看
   end;
 end;
