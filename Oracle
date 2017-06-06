@@ -166,7 +166,7 @@ select max(avg(sal)) from emp group by deptno;  --对
 select top 20,n.* from tablename n minus 
 select top 10,m.* from tablename m.
 
-在Orace中用ROWNUM,或分析函数ROW_NUMBER:
+在Oracle中用ROWNUM,或分析函数ROW_NUMBER:
 select * from 
 (select n.*,row_number() over (order by columnname) num from tablename n)
 where num>=10 and num<=20
