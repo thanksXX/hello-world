@@ -79,6 +79,42 @@ WHERE RN >= 31  and rn<=40
    where a.rq=b.rq;
 
 
+从table1,table2中取出如table3格式的数据:
+table1
+月份mon 部门dep 业绩yj
+-------------------------------
+一月份 01 10
+一月份 02 10
+一月份 03 5
+二月份 02 8
+二月份 04 9
+三月份 03 8
+
+table2
+部门dep 部门名称dname
+--------------------------------
+01 国内业务一部
+02 国内业务二部
+03 国内业务三部
+04 国际业务部
+05 其他部门
+
+table3 （result）
+部门dep 部门名称 一月份 二月份 三月份
+--------------------------------------
+01   国内业务一部   10    0     0
+02   国内业务二部   10    8     0
+03   国内业务三部   0     5     8
+04   国际业务部     0     0     9
+05   其他部门
+
+select a.dep,a.dname
+sum(case when b.mon='一月份' then b.yj else 0 end)as '一月份',
+sum(case when b.mon='二月份' then b.yj else 0 end)as '二月份',
+sum(case when b.mon='三月份' then b.yj else 0 end)as '三月份',
+from table2 a left join table1 on a.dep=b.dep
+
+
 
 以年月日方式算出每个雇员到现在为止雇佣年限：（如Mike雇佣日期：1981-05-01，现在2016-11-18，雇佣了35年6月17天）
 select empno,ename,hiredate,
