@@ -1,6 +1,8 @@
 用SQL将Oracle中同一列的多行记录拼接成一个字符串：
 http://blog.csdn.net/little_stars/article/details/9066191
 
+Oracle11g中不支持   update (select /*+ BYPASS_UJVC */...from...where...) set...
+
 右表匹配，左表全显示，则为“左”连接，（+）在右表，即右表匹配。
 
 UPDATE TABLE1 SET X_ID=FC_CREATEGUID      --自动生成流水号
