@@ -108,15 +108,18 @@ begin
 end;
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-procedure TfrmV001Main.btnJHClick(Sender: TObject);  //通过sql实现
+procedure TfrmV001Main.btnXXClick(Sender: TObject);  //通过sql实现
   var
     strCommend: string;
     strSQL : string;
     rs:TDataSet;
 begin
-  strSQL:='SELECT JJJ.HHH_APPLICATION_PKG.GET_PFILE(''YY'',''ZZ'') as FileCmd FROM DUAL'; //得到文件服务器地址
+  //strSQL:='SELECT JJJ.HHH_APPLICATION_PKG.GET_PFILE(''YY'',''ZZ'') as FileCmd FROM DUAL'; //得到文件服务器地址
   //strSQL:='SELECT sysdate as FileCmd from dual';
+  strSQL:='SELECT * FROM TABLE1 where XX='''+edt1.Text+''' and YY='''+edt1.Text+''''; 
   rs := FXXContext.QueryResult(strSQL);
+  // if rs<>nil then
+  // ShowMessage('123');
   if not rs.Eof then
   begin
     strCommend := rs.FieldByName('FileCmd').AsString;
